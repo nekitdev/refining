@@ -1,0 +1,18 @@
+[package]
+name = "refining-int"
+version.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+edition.workspace = true
+description = "Refining integers."
+documentation = "https://docs.rs/refining-int"
+readme = "README.md"
+repository.workspace = true
+license.workspace = true
+keywords = ["refinement", "type", "int"]
+
+[dependencies.refining-core]
+workspace = true
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]

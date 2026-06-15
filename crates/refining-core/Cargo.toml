@@ -1,0 +1,27 @@
+[package]
+name = "refining-core"
+version.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+edition.workspace = true
+description = "Core functionality for refinement types."
+documentation = "https://docs.rs/refining-core"
+readme = "README.md"
+repository.workspace = true
+license.workspace = true
+keywords = ["refinement", "type", "core"]
+
+[dependencies.thiserror]
+workspace = true
+
+[dependencies.serde]
+workspace = true
+optional = true
+
+[features]
+default = []
+serde = ["dep:serde"]
+unsafe-assert = []
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]

@@ -1,0 +1,18 @@
+[package]
+name = "refining-char"
+version.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+edition.workspace = true
+description = "Refining characters."
+documentation = "https://docs.rs/refining-char"
+readme = "README.md"
+repository.workspace = true
+license.workspace = true
+keywords = ["refinement", "type", "char"]
+
+[dependencies.refining-core]
+workspace = true
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]

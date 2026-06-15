@@ -1,0 +1,18 @@
+[package]
+name = "refining-str"
+version.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+edition.workspace = true
+description = "Refining strings."
+documentation = "https://docs.rs/refining-str"
+readme = "README.md"
+repository.workspace = true
+license.workspace = true
+keywords = ["refinement", "type", "str"]
+
+[dependencies.refining-core]
+workspace = true
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]

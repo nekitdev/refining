@@ -1,0 +1,23 @@
+[package]
+name = "refining-empty"
+version.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+edition.workspace = true
+description = "Refining based on emptiness."
+documentation = "https://docs.rs/refining-empty"
+readme = "README.md"
+repository.workspace = true
+license.workspace = true
+keywords = ["refinement", "type", "empty"]
+
+[dependencies.refining-core]
+workspace = true
+
+[features]
+default = ["std"]
+alloc = []
+std = []
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]

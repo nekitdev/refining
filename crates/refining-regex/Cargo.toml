@@ -1,0 +1,22 @@
+[package]
+name = "refining-regex"
+version.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+edition.workspace = true
+description = "Refining with regular expressions."
+documentation = "https://docs.rs/refining-regex"
+readme = "README.md"
+repository.workspace = true
+license.workspace = true
+keywords = ["refinement", "type", "regex"]
+
+[dependencies.regex]
+workspace = true
+features = ["default"]
+
+[dependencies.refining-core]
+workspace = true
+
+[package.metadata.docs.rs]
+rustdoc-args = ["--cfg", "docsrs"]

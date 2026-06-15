@@ -1,50 +1,121 @@
-[package]
-name = "refinement-types"
-version = "0.3.0"
+[workspace]
+members = ["crates/*"]
+resolver = "3"
+
+[workspace.package]
+version = "0.1.0"
 authors = ["nekitdev <nekit@nekit.dev>"]
+rust-version = "1.95"
 edition = "2024"
-description = "Refinement types."
-documentation = "https://docs.rs/refinement-types"
-readme = "README.md"
-repository = "https://github.com/nekitdev/refinement-types"
+repository = "https://github.com/nekitdev/refining"
 license = "MIT"
+
+[package]
+name = "refining"
+version.workspace = true
+authors.workspace = true
+rust-version.workspace = true
+edition.workspace = true
+description = "Refinement types."
+documentation = "https://docs.rs/refining"
+readme = "README.md"
+repository.workspace = true
+license.workspace = true
 keywords = ["refinement", "type"]
 categories = ["no-std", "no-std::no-alloc", "rust-patterns"]
 
-[dependencies.miette]
-version = "7.6.0"
-optional = true
-
-[dependencies.paste]
-version = "1.0.15"
-
-[dependencies.regex]
-version = "1.11.1"
-optional = true
-
-[dependencies.serde]
-version = "1.0.219"
-default-features = false
-features = ["derive"]
-optional = true
-
-[dependencies.thiserror]
-version = "2.0.12"
+[workspace.dependencies.anyhow]
+version = "1.0.102"
 default-features = false
 
-[dev-dependencies.refinement-types]
-features = ["regex", "serde"]
-path = "."
+[workspace.dependencies.regex]
+version = "1.12.4"
+default-features = false
+
+[workspace.dependencies.serde]
+version = "1.0.228"
+default-features = false
+
+[workspace.dependencies.thiserror]
+version = "2.0.18"
+default-features = false
+
+[workspace.dependencies.refining-core]
+path = "crates/refining-core"
+version = "0.1.0"
+default-features = false
+
+[workspace.dependencies.refining-empty]
+path = "crates/refining-empty"
+version = "0.1.0"
+default-features = false
+
+[workspace.dependencies.refining-length]
+path = "crates/refining-length"
+version = "0.1.0"
+default-features = false
+
+[workspace.dependencies.refining-int]
+path = "crates/refining-int"
+version = "0.1.0"
+default-features = false
+
+[workspace.dependencies.refining-char]
+path = "crates/refining-char"
+version = "0.1.0"
+default-features = false
+
+[workspace.dependencies.refining-str]
+path = "crates/refining-str"
+version = "0.1.0"
+default-features = false
+
+[workspace.dependencies.refining-regex]
+path = "crates/refining-regex"
+version = "0.1.0"
+default-features = false
+
+[dependencies.refining-core]
+workspace = true
+
+[dependencies.refining-empty]
+workspace = true
+optional = true
+
+[dependencies.refining-length]
+workspace = true
+optional = true
+
+[dependencies.refining-int]
+workspace = true
+optional = true
+
+[dependencies.refining-char]
+workspace = true
+optional = true
+
+[dependencies.refining-str]
+workspace = true
+optional = true
+
+[dependencies.refining-regex]
+workspace = true
+optional = true
+
+[dependencies.anyhow]
+workspace = true
 
 [features]
-default = ["std"]
-serde = ["dep:serde"]
-regex = ["dep:regex", "std"]
-diagnostics = ["dep:miette", "std"]
-unsafe-assert = []
-alloc = []
-std = []
+default = ["std", "empty", "length", "int", "char", "str", "regex"]
+empty = ["refining-empty"]
+length = ["refining-length"]
+int = ["refining-int"]
+char = ["refining-char"]
+str = ["refining-str"]
+regex = ["refining-regex", "std"]
+unsafe-assert = ["refining-core/unsafe-assert"]
+alloc = ["refining-empty?/alloc", "refining-length?/alloc"]
+std = ["refining-empty?/std", "refining-length?/std"]
 
 [package.metadata.docs.rs]
-features = ["regex", "serde"]
 rustdoc-args = ["--cfg", "docsrs"]

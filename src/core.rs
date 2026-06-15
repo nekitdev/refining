@@ -13,15 +13,9 @@ use core::hint::assert_unchecked;
 
 pub use core::error::Error as ErrorCore;
 
-#[cfg(feature = "diagnostics")]
-use miette::Diagnostic;
-
-#[cfg(feature = "serde")]
-use serde::{Deserialize, Deserializer, Serialize, Serializer, de};
-
 use crate::{static_str::StaticStr, type_str, type_str::TypeStr};
 
-type_str!(pub NoContext = "no context" => "Represents the abscence of context.");
+type_str!(pub NoContext = "no context" => "Represents the absence of context.");
 
 /// Literal `expected` string.
 pub const EXPECTED: StaticStr = "expected";
@@ -129,7 +123,7 @@ impl<T: fmt::Debug, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> fmt::Debug
     for Refinement<T, P, C>
 {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.get().fmt(formatter)
+        self.as_ref().fmt(formatter)
     }
 }
 
@@ -137,14 +131,14 @@ impl<T: fmt::Display, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> fmt::Displa
     for Refinement<T, P, C>
 {
     fn fmt(&self, formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        self.get().fmt(formatter)
+        self.as_ref().fmt(formatter)
     }
 }
 
 impl<T: Clone, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Clone for Refinement<T, P, C> {
     fn clone(&self) -> Self {
         // SAFETY: by construction, the value satisfies the predicate
-        unsafe { Self::unchecked(self.get().clone()) }
+        unsafe { Self::unchecked(self.as_ref().clone()) }
     }
 }
 
@@ -154,7 +148,7 @@ impl<T: PartialEq, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> PartialEq
     for Refinement<T, P, C>
 {
     fn eq(&self, other: &Self) -> bool {
-        self.get().eq(other.get())
+        self.as_ref().eq(other.as_ref())
     }
 }
 
@@ -164,25 +158,25 @@ impl<T: PartialOrd, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> PartialOrd
     for Refinement<T, P, C>
 {
     fn partial_cmp(&self, other: &Self) -> Option<Ordering> {
-        self.get().partial_cmp(other.get())
+        self.as_ref().partial_cmp(other.as_ref())
     }
 }
 
 impl<T: Ord, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Ord for Refinement<T, P, C> {
     fn cmp(&self, other: &Self) -> Ordering {
-        self.get().cmp(other.get())
+        self.as_ref().cmp(other.as_ref())
     }
 }
 
 impl<T: Hash, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Hash for Refinement<T, P, C> {
     fn hash<H: Hasher>(&self, hasher: &mut H) {
-        self.get().hash(hasher);
+        self.as_ref().hash(hasher);
     }
 }
 
 impl<T, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> AsRef<T> for Refinement<T, P, C> {
     fn as_ref(&self) -> &T {
-        self.get()
+        self.as_ref()
     }
 }
 
@@ -190,7 +184,7 @@ impl<T, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Deref for Refinement<T, P
     type Target = T;
 
     fn deref(&self) -> &Self::Target {
-        self.get()
+        self.as_ref()
     }
 }
 
@@ -212,26 +206,6 @@ impl<T: Default, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Refinement<T, P,
     pub unsafe fn unchecked_default() -> Self {
         // SAFETY: the caller must ensure that the default value satisfies the predicate
         unsafe { Self::unchecked(T::default()) }
-    }
-}
-
-#[cfg(feature = "serde")]
-impl<T: Serialize, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Serialize
-    for Refinement<T, P, C>
-{
-    fn serialize<S: Serializer>(&self, serializer: S) -> Result<S::Ok, S::Error> {
-        self.get().serialize(serializer)
-    }
-}
-
-#[cfg(feature = "serde")]
-impl<'de, T: Deserialize<'de>, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Deserialize<'de>
-    for Refinement<T, P, C>
-{
-    fn deserialize<D: Deserializer<'de>>(deserializer: D) -> Result<Self, D::Error> {
-        let value = T::deserialize(deserializer)?;
-
-        Self::refine(value).map_err(de::Error::custom)
     }
 }
 
@@ -399,7 +373,7 @@ impl<T, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Refinement<T, P, C> {
     ///
     /// Returns [`struct@Error`] if the resulting value does not satisfy the predicate.
     pub fn map<F: FnOnce(T) -> T>(self, function: F) -> Result<Self, Error<T, P, C>> {
-        Self::refine(function(self.take()))
+        Self::refine(function(self.get()))
     }
 
     /// Maps the value of the refinement without checking the new value.
@@ -409,7 +383,7 @@ impl<T, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Refinement<T, P, C> {
     /// The caller must ensure that the new value satisfies the predicate.
     pub unsafe fn map_unchecked<F: FnOnce(T) -> T>(self, function: F) -> Self {
         // SAFETY: the caller must ensure that the new value satisfies the predicate
-        unsafe { Self::unchecked(function(self.take())) }
+        unsafe { Self::unchecked(function(self.get())) }
     }
 
     /// Replaces the value of the refinement.
@@ -436,20 +410,28 @@ impl<T, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Refinement<T, P, C> {
         unsafe { assert_unchecked(Self::is_fine(&self.value)) }
     }
 
+    fn get_no_assert(self) -> T {
+        self.value
+    }
+
+    fn get_ref_no_assert(&self) -> &T {
+        &self.value
+    }
+
     /// Takes the value from the refinement.
-    pub fn take(self) -> T {
+    pub fn get(self) -> T {
         #[cfg(feature = "unsafe-assert")]
         self.assert_refined();
 
-        self.value
+        self.get_no_assert()
     }
 
     /// Returns a reference to the value of the refinement.
     #[allow(clippy::missing_const_for_fn)] // conditionally const
-    pub fn get(&self) -> &T {
+    pub fn as_ref(&self) -> &T {
         #[cfg(feature = "unsafe-assert")]
         self.assert_refined();
 
-        &self.value
+        self.get_ref_no_assert()
     }
 }
