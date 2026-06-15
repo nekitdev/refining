@@ -102,7 +102,7 @@ optional = true
 workspace = true
 optional = true
 
-[dependencies.anyhow]
+[dev-dependencies.anyhow]
 workspace = true
 
 [features]
