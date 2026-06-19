@@ -20,6 +20,7 @@ impl<P: TypeStr + ?Sized> StartsWith<P> {
     }
 }
 
+/// The `str::starts_with` literal.
 pub const STARTS_WITH: &str = "str::starts_with";
 
 impl<T: AsRef<str> + ?Sized, P: TypeStr + ?Sized> Predicate<T> for StartsWith<P> {
@@ -53,6 +54,7 @@ impl<S: TypeStr + ?Sized> EndsWith<S> {
     }
 }
 
+/// The `str::ends_with` literal.
 pub const ENDS_WITH: &str = "str::ends_with";
 
 impl<T: AsRef<str> + ?Sized, S: TypeStr + ?Sized> Predicate<T> for EndsWith<S> {
@@ -86,6 +88,7 @@ impl<S: TypeStr + ?Sized> Contains<S> {
     }
 }
 
+/// The `str::contains` literal.
 pub const CONTAINS: &str = "str::contains";
 
 impl<T: AsRef<str> + ?Sized, S: TypeStr + ?Sized> Predicate<T> for Contains<S> {
@@ -216,7 +219,10 @@ pub struct TrimmedStart {
     private: PhantomData<()>,
 }
 
+/// The `string trimmed at the start` message.
 pub const TRIMMED_START_MESSAGE: &str = "string trimmed at the start";
+
+/// The `str::trimmed_start` literal.
 pub const TRIMMED_START: &str = "str::trimmed_start";
 
 impl<T: AsRef<str> + ?Sized> Predicate<T> for TrimmedStart {
@@ -240,7 +246,10 @@ pub struct TrimmedEnd {
     private: PhantomData<()>,
 }
 
+/// The `string trimmed at the end` message.
 pub const TRIMMED_END_MESSAGE: &str = "string trimmed at the end";
+
+/// The `str::trimmed_end` literal.
 pub const TRIMMED_END: &str = "str::trimmed_end";
 
 impl<T: AsRef<str> + ?Sized> Predicate<T> for TrimmedEnd {
@@ -264,7 +273,10 @@ pub struct Trimmed {
     private: PhantomData<()>,
 }
 
+/// The `trimmed string` message.
 pub const TRIMMED_MESSAGE: &str = "trimmed string";
+
+/// The `str::trimmed` literal.
 pub const TRIMMED: &str = "str::trimmed";
 
 impl<T: AsRef<str> + ?Sized> Predicate<T> for Trimmed {
@@ -288,7 +300,10 @@ pub struct Ascii {
     private: PhantomData<()>,
 }
 
+/// The `ascii string` message.
 pub const ASCII_MESSAGE: &str = "ascii string";
+
+/// The `str::ascii` literal.
 pub const ASCII: &str = "str::ascii";
 
 impl<T: AsRef<str> + ?Sized> Predicate<T> for Ascii {

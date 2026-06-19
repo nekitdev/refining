@@ -1,13 +1,16 @@
-use core::fmt;
-use std::marker::PhantomData;
+//! Character predicates.
+
+use core::{fmt, marker::PhantomData};
 
 use refining_core::{logical::And, predicate::Predicate};
 
+/// Checks whether the character is equal to `C`.
 pub struct CharEqual<const C: char> {
     private: PhantomData<()>,
 }
 
 impl<const C: char> CharEqual<C> {
+    /// Returns the character `C` for which this predicate checks.
     #[must_use]
     pub const fn character() -> char {
         C
@@ -40,11 +43,13 @@ impl<const C: char> Predicate<char> for CharEqual<C> {
     }
 }
 
+/// Checks whether the character is not equal to `C`.
 pub struct CharNotEqual<const C: char> {
     private: PhantomData<()>,
 }
 
 impl<const C: char> CharNotEqual<C> {
+    /// Returns the character `C` for which this predicate checks.
     #[must_use]
     pub const fn character() -> char {
         C
@@ -77,11 +82,13 @@ impl<const C: char> Predicate<char> for CharNotEqual<C> {
     }
 }
 
+/// Checks whether the character is less than `C`.
 pub struct CharLess<const C: char> {
     private: PhantomData<()>,
 }
 
 impl<const C: char> CharLess<C> {
+    /// Returns the character `C` for which this predicate checks.
     #[must_use]
     pub const fn character() -> char {
         C
@@ -114,11 +121,13 @@ impl<const C: char> Predicate<char> for CharLess<C> {
     }
 }
 
+/// Checks whether the character is greater than `C`.
 pub struct CharGreater<const C: char> {
     private: PhantomData<()>,
 }
 
 impl<const C: char> CharGreater<C> {
+    /// Returns the character `C` for which this predicate checks.
     #[must_use]
     pub const fn character() -> char {
         C
@@ -151,11 +160,13 @@ impl<const C: char> Predicate<char> for CharGreater<C> {
     }
 }
 
+/// Checks whether the character is less than or equal to `C`.
 pub struct CharLessOrEqual<const C: char> {
     private: PhantomData<()>,
 }
 
 impl<const C: char> CharLessOrEqual<C> {
+    /// Returns the character `C` for which this predicate checks.
     #[must_use]
     pub const fn character() -> char {
         C
@@ -188,11 +199,13 @@ impl<const C: char> Predicate<char> for CharLessOrEqual<C> {
     }
 }
 
+/// Checks whether the character is greater than or equal to `C`.
 pub struct CharGreaterOrEqual<const C: char> {
     private: PhantomData<()>,
 }
 
 impl<const C: char> CharGreaterOrEqual<C> {
+    /// Returns the character `C` for which this predicate checks.
     #[must_use]
     pub const fn character() -> char {
         C
@@ -240,6 +253,8 @@ pub type CharClosed<const C: char, const D: char> = And<CharGreaterOrEqual<C>, C
 /// Represents the null character.
 pub const NULL: char = '\0';
 
+/// Checks whether the character is [`NULL`].
 pub type CharNull = CharEqual<NULL>;
 
+/// Checks whether the character is non-[`NULL`].
 pub type CharNonNull = CharNotEqual<NULL>;

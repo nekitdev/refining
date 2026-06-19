@@ -1,3 +1,5 @@
+//! The `refining-char` prelude.
+
 #[doc(inline)]
 pub use crate::{
     ascii::{

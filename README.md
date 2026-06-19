@@ -82,19 +82,28 @@ nekit (42%)
 
 ## Features
 
-### `std`
+The `refining` crate comes with the following features:
 
-### `empty`
+- `std` (*enabled by default*): depends on the Rust Standard Library (`std`);
+- `empty` (*enabled by default*): provides [`refining::empty`][refining-empty] predicates;
+- `length` (*enabled by default*): provides [`refining::length`][refining-length] predicates;
+- `int` (*enabled by default*): provides [`refining::int`][refining-int] predicates;
+- `char` (*enabled by default*): provides [`refining::char`][refining-char] predicates;
+- `str` (*enabled by default*): provides [`refining::str`][refining-str] predicates;
+- `regex` (*enabled by default*, implies `std`): provides [`refining::regex`][refining-regex] predicates.
 
-### `length`
+These features can be disabled via the following:
 
-### `int`
+```toml
+[dependencies.refining]
+version = "0.1.0"
+default-features = false
+```
 
-### `char`
+Then only the [`refining::core`][refining-core] module will be available; additional features
+can be enabled individually.
 
-### `str`
-
-### `regex`
+Again, note that `regex` implies `std`, so it can not be used in `no_std` environments.
 
 ## Documentation
 
@@ -141,3 +150,11 @@ If you are interested in contributing to `refining`, make sure to take a look at
 [Version Badge]: https://img.shields.io/crates/v/refining
 [Downloads Badge]: https://img.shields.io/crates/dr/refining
 [Test Badge]: https://github.com/nekitdev/refining/workflows/test/badge.svg
+
+[refining-core]: https://docs.rs/refining-core
+[refining-empty]: https://docs.rs/refining-empty
+[refining-length]: https://docs.rs/refining-length
+[refining-int]: https://docs.rs/refining-int
+[refining-char]: https://docs.rs/refining-char
+[refining-str]: https://docs.rs/refining-str
+[refining-regex]: https://docs.rs/refining-regex

@@ -202,7 +202,8 @@ impl<T: ?Sized, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Refinement<T, P, 
     ///
     /// [`assert_unchecked`]: core::hint::assert_unchecked
     /// [`get_ref_no_assert`]: Self::get_ref_no_assert
-    pub const fn get_ref(&self) -> &T {
+    #[allow(clippy::missing_const_for_fn)] // conditionally const
+    pub fn get_ref(&self) -> &T {
         let reference = self.get_ref_no_assert();
 
         #[cfg(feature = "unsafe-assert")]

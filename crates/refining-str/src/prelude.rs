@@ -1,3 +1,5 @@
+//! The `refining-str` prelude.
+
 #[doc(inline)]
 pub use crate::{
     bytes::{BytesAll, BytesAny},

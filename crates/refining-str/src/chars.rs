@@ -1,7 +1,12 @@
+//! Predicates for checking string characters.
+
 use core::{fmt, marker::PhantomData};
 
 use refining_core::predicate::{Predicate, PredicateExpected};
 
+/// Checks whether all [`chars`] of the string satisfy the given predicate.
+///
+/// [`chars`]: str::chars
 pub struct CharsAll<P: Predicate<char> + ?Sized> {
     predicate: PhantomData<P>,
 }
@@ -28,6 +33,9 @@ impl<T: AsRef<str> + ?Sized, P: Predicate<char> + ?Sized> Predicate<T> for Chars
     }
 }
 
+/// Checks whether any [`chars`] of the string satisfy the given predicate.
+///
+/// [`chars`]: str::chars
 pub struct CharsAny<P: Predicate<char> + ?Sized> {
     predicate: PhantomData<P>,
 }

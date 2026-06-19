@@ -1,5 +1,6 @@
 //! Refinement types core.
 
+#![no_std]
 #![deny(missing_docs)]
 
 pub mod context;

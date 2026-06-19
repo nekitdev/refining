@@ -1,3 +1,5 @@
+//! Unicode character predicates.
+
 use crate::internals::predicate;
 
 predicate! {
