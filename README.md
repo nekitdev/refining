@@ -90,9 +90,12 @@ The `refining` crate comes with the following features:
 - `int` (*enabled by default*): provides [`refining::int`][refining-int] predicates;
 - `char` (*enabled by default*): provides [`refining::char`][refining-char] predicates;
 - `str` (*enabled by default*): provides [`refining::str`][refining-str] predicates;
-- `regex` (*enabled by default*, implies `std`): provides [`refining::regex`][refining-regex] predicates.
+- `regex` (*enabled by default*, implies `std`): provides [`refining::regex`][refining-regex] predicates;
+- `serde` (*enabled by default*): implements `Serialize` and `Deserialize` for `Refinement` types;
+- `unsafe-assert`: adds `assert_unchecked` calls to `get` and `get_ref` of `Refinement` types;
+- `alloc`: depends on the `alloc` crate, providing support for heap-allocated types in `no_std` environments.
 
-These features can be disabled via the following:
+The default features can be disabled via the following:
 
 ```toml
 [dependencies.refining]

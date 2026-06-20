@@ -28,6 +28,10 @@ categories = ["no-std", "no-std::no-alloc", "rust-patterns"]
 version = "1.0.102"
 default-features = false
 
+[workspace.dependencies.tiny-input]
+version = "0.2.0"
+default-features = false
+
 [workspace.dependencies.regex]
 version = "1.12.4"
 default-features = false
@@ -105,8 +109,11 @@ optional = true
 [dev-dependencies.anyhow]
 workspace = true
 
+[dev-dependencies.tiny-input]
+workspace = true
+
 [features]
-default = ["std", "empty", "length", "int", "char", "str", "regex"]
+default = ["std", "empty", "length", "int", "char", "str", "regex", "serde"]
 empty = ["refining-empty"]
 length = ["refining-length"]
 int = ["refining-int"]
@@ -114,6 +121,7 @@ char = ["refining-char"]
 str = ["refining-str"]
 regex = ["refining-regex", "std"]
 unsafe-assert = ["refining-core/unsafe-assert"]
+serde = ["refining-core/serde"]
 alloc = ["refining-empty?/alloc", "refining-length?/alloc"]
 std = ["refining-empty?/std", "refining-length?/std"]
 
