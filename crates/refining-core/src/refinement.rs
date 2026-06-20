@@ -27,6 +27,15 @@ pub struct Refinement<T: ?Sized, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized =
     value: T,
 }
 
+impl<T: Clone, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Clone for Refinement<T, P, C> {
+    fn clone(&self) -> Self {
+        // SAFETY: `clone` does not change the value, so the predicate is still satisfied
+        unsafe { Self::unchecked(self.get_ref().clone()) }
+    }
+}
+
+impl<T: Copy, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Copy for Refinement<T, P, C> {}
+
 impl<T: fmt::Debug + ?Sized, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> fmt::Debug
     for Refinement<T, P, C>
 {
@@ -141,6 +150,23 @@ pub trait Refining: Deref<Target = Self::Value> + sealed::Sealed {
     where
         Self::Value: Sized;
 
+    /// Constructs [`Self`] from default [`Self::Value`] without checking.
+    ///
+    /// # Safety
+    ///
+    /// This method should only be called if the default value satisfies [`Self::Predicate`].
+    ///
+    /// Alternatively, this can be checked using the [`is_fine`] method.
+    ///
+    /// [`is_fine`]: Self::is_fine
+    unsafe fn unchecked_default() -> Self
+    where
+        Self::Value: Default,
+        Self: Sized,
+    {
+        unsafe { Self::unchecked(Self::Value::default()) }
+    }
+
     /// Checks whether the given [`Self::Value`] satisfies [`Self::Predicate`].
     ///
     /// This is the same as calling [`Self::Predicate::check`] on the value.
@@ -176,6 +202,20 @@ pub trait Refining: Deref<Target = Self::Value> + sealed::Sealed {
     where
         Self::Value: Sized,
         Self: Sized;
+
+    /// Constructs [`Self`] from default [`Self::Value`].
+    ///
+    /// # Errors
+    ///
+    /// Returns [`Error<Self::Value, Self::Predicate, Self::Context>`](Error)
+    /// in case the default value does not satisfy the predicate.
+    fn checked_default() -> RecoverableRefinement<Self>
+    where
+        Self::Value: Default,
+        Self: Sized,
+    {
+        Self::checked(Self::Value::default())
+    }
 }
 
 impl<T: ?Sized, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Refinement<T, P, C> {
@@ -299,6 +339,31 @@ impl<T, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Refinement<T, P, C> {
         } else {
             Err(Error::new(value))
         }
+    }
+}
+
+impl<T: Default, P: Predicate<T> + ?Sized, C: TypeStr + ?Sized> Refinement<T, P, C> {
+    /// Constructs [`Self`] from the default value.
+    ///
+    /// # Safety
+    ///
+    /// This method should only be called if the default value satisfies `P`,
+    /// which can be checked using [`is_fine`].
+    ///
+    /// [`is_fine`]: Self::is_fine
+    pub unsafe fn unchecked_default() -> Self {
+        unsafe { Self::unchecked(T::default()) }
+    }
+
+    /// Constructs [`Self`] from the default value.
+    ///
+    /// # Errors
+    ///
+    /// Returns [`Error<T, P, C>`] in case the default value does not satisfy `P`.
+    ///
+    /// [`Error<T, P, C>]: Error
+    pub fn checked_default() -> Recoverable<Self, P, C, T> {
+        Self::checked(T::default())
     }
 }
 
