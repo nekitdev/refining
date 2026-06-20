@@ -21,7 +21,7 @@ Or by directly specifying it in the configuration like so:
 
 ```toml
 [dependencies]
-refining = "0.1.0"
+refining = "0.2.0"
 ```
 
 Alternatively, you can add it directly from the source:
@@ -99,7 +99,7 @@ The default features can be disabled via the following:
 
 ```toml
 [dependencies.refining]
-version = "0.1.0"
+version = "0.2.0"
 default-features = false
 ```
 
