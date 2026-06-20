@@ -20,7 +20,7 @@ impl<const N: usize, T: HasLength + ?Sized> Predicate<T> for LengthEqual<N> {
     }
 
     fn expect(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(formatter, "value with length == {N}")
+        write!(formatter, "length == {N}")
     }
 
     fn expect_code(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -39,7 +39,7 @@ impl<const N: usize, T: HasLength + ?Sized> Predicate<T> for LengthNotEqual<N> {
     }
 
     fn expect(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(formatter, "value with length != {N}")
+        write!(formatter, "length != {N}")
     }
 
     fn expect_code(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -58,7 +58,7 @@ impl<const N: usize, T: HasLength + ?Sized> Predicate<T> for LengthLess<N> {
     }
 
     fn expect(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(formatter, "value with length < {N}")
+        write!(formatter, "length < {N}")
     }
 
     fn expect_code(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -77,7 +77,7 @@ impl<const N: usize, T: HasLength + ?Sized> Predicate<T> for LengthGreater<N> {
     }
 
     fn expect(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(formatter, "value with length > {N}")
+        write!(formatter, "length > {N}")
     }
 
     fn expect_code(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -96,7 +96,7 @@ impl<const N: usize, T: HasLength + ?Sized> Predicate<T> for LengthLessOrEqual<N
     }
 
     fn expect(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(formatter, "value with length <= {N}")
+        write!(formatter, "length <= {N}")
     }
 
     fn expect_code(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -115,7 +115,7 @@ impl<const N: usize, T: HasLength + ?Sized> Predicate<T> for LengthGreaterOrEqua
     }
 
     fn expect(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(formatter, "value with length >= {N}")
+        write!(formatter, "length >= {N}")
     }
 
     fn expect_code(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
@@ -158,7 +158,7 @@ impl<const D: usize, const M: usize, T: HasLength + ?Sized> Predicate<T> for Len
     }
 
     fn expect(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
-        write!(formatter, "value with length % {D} == {M}")
+        write!(formatter, "length % {D} == {M}")
     }
 
     fn expect_code(formatter: &mut fmt::Formatter<'_>) -> fmt::Result {
